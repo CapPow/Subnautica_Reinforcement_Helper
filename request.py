@@ -1,6 +1,10 @@
 import zmq
 import time
 
+"""
+adapted from: https://github.com/sye8/Python-Unity-ZMQ
+"""
+
 context = zmq.Context()
 requestSocket = context.socket(zmq.REQ)
 requestSocket.connect("tcp://localhost:5558")
