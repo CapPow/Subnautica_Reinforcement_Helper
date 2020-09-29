@@ -13,7 +13,7 @@ The initial use case is to train an agent to follow in game creatures, keeping t
 
 **Secondary goals** for this mod are to:
  - Provide on demand location information
-   - Useful for includeing movement in scoring
+   - Useful for movement based scoring (e.g., distance traveled)
    - Useful for determining if the agent is stuck in the game world or a local minima
  - Include an on-demand reset function with resets the agent's in game location and orientation within a randomized range
  - Accept input joystick commands
