@@ -1,0 +1,9 @@
+{
+  "Id": "ReinforcementHelper",
+  "DisplayName": "Reinforcement Helper",
+  "Author": "Cappow",
+  "Version": "0.1",
+  "Enable": true,
+  "Game": "Subnautica",
+  "AssemblyName": "ReinforcementHelper.dll"
+}
