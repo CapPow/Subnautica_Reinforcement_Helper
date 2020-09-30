@@ -1,43 +1,33 @@
 import zmq
 import time
-
-"""
-adapted from: https://github.com/sye8/Python-Unity-ZMQ
-"""
-
+import random
+import base64
+import numpy as np
+import io
+from PIL import Image
 context = zmq.Context()
-requestSocket = context.socket(zmq.REQ)
-requestSocket.connect("tcp://localhost:5558")
+socket = context.socket(zmq.REQ)
+socket.connect("tcp://localhost:12346")
 
-time.sleep(3)
-while True:
-    
-    poller = zmq.Poller()
-    poller.register(requestSocket, zmq.POLLIN)
-    
-    # Send On
-    msg = b"get_outputs"
-    requestSocket.send(msg)
-    
-    
-    # Receive Acknowledgement
-    ack = dict(poller.poll(2000))
-    if ack:
-        print("ack true")
-        print(ack)
-        print(dir(ack))
-        if ack.get(requestSocket) == zmq.POLLIN:
-            try:
-                outputs = requestSocket.recv(zmq.NOBLOCK)
+TIMEOUT = 5000
+time.sleep(2)
+for i in range(100):
+        time.sleep(0.05)
+        socket.send_string("get_outputs")
+        poller = zmq.Poller()
+        poller.register(socket, zmq.POLLIN)
+        evt = dict(poller.poll(TIMEOUT))
+        if evt:
+                if evt.get(socket) == zmq.POLLIN:
+                        response = socket.recv_string()
+                        score, base64string = response.split("|")
 
-                score, base64string = outputs.split("|")
-                jpg_img = base64.b64decode(base64string)
-                
-                with open(f"{img_name}.jpg", "wb") as fh:
-                    fh.write(jpg_img)
-                
-                print(f"score was:{score}, fn:{img_name}.png")
-
-            except zmq.Again as e:
-                print("No response")
-    time.sleep(3)
+                        jpg_img = base64.b64decode(base64string)
+                        with open(f"{i}.jpg", "wb") as fh:
+                                fh.write(jpg_img)
+                        print(f"score was:{score}, fn:{i}.png")
+                        if i == 0:
+                                print(base64string)
+        else:
+                print("Connection failed")
+                break
