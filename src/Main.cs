@@ -2,7 +2,7 @@
 using System.Reflection;
 //using System.Collections;
 using QModManager.API.ModLoading;
-using HarmonyLib;
+//using HarmonyLib;
 //using UnityEngine;
 //using System.Diagnostics;
 namespace ReinforcementHelper
@@ -11,13 +11,10 @@ namespace ReinforcementHelper
 	[QModCore]
 	public class Main
 	{
-		internal static Responder responder = new Responder();
 		// Your patching method must have the QModPatch attribute (and must be public)
 		[QModPatch]
 		public static void Load()
 		{
-			responder.Start();
-			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), "ReinforcementHelper");
 			Placeholder.Awake();
 		}
 	}

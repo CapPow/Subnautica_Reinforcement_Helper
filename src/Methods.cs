@@ -73,34 +73,33 @@ namespace ReinforcementHelper
 		}
 		public static string RetrieveOutputs()
         {
+			// start screencap coroutine
+			ScreenToText();
+			// gather scores while it captures
 			float score = GetScore();
-			string ImgString = ScreenToText();
+			// return both
 			string output = string.Concat(new object[]
 				{
 							score,
 							"|",
-							ImgString
+							Image
 				});
 			return output;
 
 		}
 		internal static ScreenCapture Capture;
-		public static string ScreenToText()
+		public static string Image;
+		public static void ScreenToText()
 		{
 			if (Capture == null)
 			{
 				Capture = Camera.main.gameObject.AddComponent<ScreenCapture>();
 			}
 			Capture.SaveScreenshot();
-			// if you wish to save:
-			//System.IO.File.WriteAllBytes("filename.png", Capture.Image);
-			return Capture.Image;
 		}
 		}
 	internal class ScreenCapture : MonoBehaviour
 	{
-		internal string Image = null;
-
 		internal void SaveScreenshot()
 		{
 			StartCoroutine(SaveScreenshot_ReadPixelsAsynch());
@@ -123,7 +122,7 @@ namespace ReinforcementHelper
 			byte[] bytes = texture.EncodeToJPG();
 
 			String AsBase64String = Convert.ToBase64String(bytes);
-			Image = AsBase64String;
+			Methods.Image = AsBase64String;
 
 			//Tell unity to delete the texture, by default it seems to keep hold of it and memory crashes will occur after too many screenshots.
 			DestroyObject(texture);

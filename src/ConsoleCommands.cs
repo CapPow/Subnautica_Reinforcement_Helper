@@ -29,7 +29,8 @@ namespace ReinforcementHelper
 		}
 		public void OnConsoleCommand_isresponderon()
 		{
-			bool isresponderon = new Responder().responderIsStarted;
+			//bool isresponderon = Main.responder.responderIsStarted;
+			string isresponderon = "Unknown";
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Info,
 										   "Responder is on: " + isresponderon,
 										   null,
@@ -46,11 +47,11 @@ namespace ReinforcementHelper
 		public void OnConsoleCommand_getoutput()
 		{
             //Methods.RetrieveOutputs();
-            string ImgString = Methods.ScreenToText();
+            string outstring = Methods.RetrieveOutputs();
 
 			//string recent_output = ZMQServer.recent_data;
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Info,
-										   ImgString,
+										   outstring,
 										   null,
 										   false);
 		}
@@ -66,12 +67,14 @@ namespace ReinforcementHelper
 				Placeholder.DummyObject = new GameObject("DummyObject");
 				UnityEngine.Object.DontDestroyOnLoad(Placeholder.DummyObject);
 				Placeholder.DummyObject.AddComponent<ConsoleCommands>();
+				Placeholder.DummyObject.AddComponent<ServerObject>();
 			}
 			catch
 			{
 				Placeholder.DummyObject = new GameObject("DummyObject");
 				UnityEngine.Object.DontDestroyOnLoad(Placeholder.DummyObject);
 				Placeholder.DummyObject.AddComponent<ConsoleCommands>();
+				Placeholder.DummyObject.AddComponent<ServerObject>();
 			}
 		}
 
