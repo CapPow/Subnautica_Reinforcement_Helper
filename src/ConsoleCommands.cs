@@ -27,12 +27,14 @@ namespace ReinforcementHelper
 			DevConsole.RegisterConsoleCommand(this, "getoutput", false, false);
 			DevConsole.RegisterConsoleCommand(this, "isresponderon", false, false);
 		}
+
 		public void OnConsoleCommand_isresponderon()
 		{
 			//bool isresponderon = Main.responder.responderIsStarted;
-			string isresponderon = "Unknown";
+			ServerObject server = Placeholder.DummyObject.GetComponent<ServerObject>();
+			bool isresponderon = server.Connected;
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Info,
-										   "Responder is on: " + isresponderon,
+										   "Responder conected: " + isresponderon,
 										   null,
 										   true);
 		}
@@ -47,7 +49,7 @@ namespace ReinforcementHelper
 		public void OnConsoleCommand_getoutput()
 		{
             //Methods.RetrieveOutputs();
-            string outstring = Methods.RetrieveOutputs();
+            string outstring = Methods.GetOutputs();
 
 			//string recent_output = ZMQServer.recent_data;
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Info,

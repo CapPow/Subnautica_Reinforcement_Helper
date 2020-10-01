@@ -53,7 +53,7 @@ namespace ReinforcementHelper
 		{
 			_listenerCancelled = false;
 			_listenerWorker.Start();
-			//InvokeRepeating("SlowUpdate", 5.0f, 0.05f);
+			//InvokeRepeating("SlowUpdate", 5.0f, 0.1f);
 			QModManager.Utility.Logger.Log(QModManager.Utility.Logger.Level.Info,
 							  "Server Start() Called thread is alive: " + _listenerWorker.IsAlive,
 							  null,
@@ -61,15 +61,11 @@ namespace ReinforcementHelper
 		}
 		private void SlowUpdate()
         {
-			//if (!_listenerWorker.IsAlive)
-			//	{
-			//		this.Start();
-			//	}
+	
 		}
-		private void Update()
-        {
-		
-		}
+		//private void Update()
+		// {
+		// }
 		public void Stop()
 		{
 			_listenerCancelled = true;
@@ -83,33 +79,32 @@ namespace ReinforcementHelper
 			private NetMqPublisher _netMqPublisher;
 			private string _response = "";
 
-			private void Start()
+			public void Start()
 			{
 				_netMqPublisher = new NetMqPublisher(HandleMessage);
 				_netMqPublisher.Start();
-				//update the response message less frequently than every single frame
-				InvokeRepeating("SlowUpdate", 5.0f, 0.05f);
 			}
 
 			private void Update()
 			{
 				Connected = _netMqPublisher.Connected;
-			}
-			private void SlowUpdate()
-			{
-				_response = Methods.RetrieveOutputs();
+				_response = Methods.GetOutputs();
 			}
 
-			private string HandleMessage(string message)
-			{
-				// Not on main thread
-			Connected = _netMqPublisher.Connected;
+		private string HandleMessage(string message)
+		{
+			// Not on main thread
 			if (message == "get_outputs")
 			{
 				return _response;
 			}
+			if (message.Contains("warp"))
+			{
+				string[] pos = message.Split('|');
+				Methods.WarpTo(pos[1]);
+				return "warping";
+			}
 			else return "not a proper request";
-			
 		}
 
 			private void OnDestroy()

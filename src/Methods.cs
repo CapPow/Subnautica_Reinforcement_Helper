@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
 using UnityEngine;
+using UWE;
+using UWEScript;
+using System.IO;
 
 namespace ReinforcementHelper
 {
-	class Methods
+	class Methods : MonoBehaviour
 	{
 		public static float GetScore()
 		{
 			float score = 0f;
 			float screenArea = (float)(Screen.height * Screen.width);
-			foreach (GameObject gameObject in UnityEngine.Object.FindSceneObjectsOfType(typeof(GameObject)))
+			foreach (GameObject gameObject in UnityEngine.Object.FindObjectsOfType(typeof(GameObject)))
 			{
 				Collider collider = gameObject.GetComponent<Collider>();
 				if (collider == null)
@@ -71,24 +70,67 @@ namespace ReinforcementHelper
 			// encode ss
 			return score;
 		}
-		public static string RetrieveOutputs()
+		// holds up a process until ImageLoaded is true
+		private static IEnumerator CheckImageReady()
+		{
+			while (ImageLoaded == false)
+			{
+				yield return null; // wait until next frame
+			}
+		}
+		public static void WarpTo(string pos)
+		{
+			string[] coords = pos.Split(',');
+			// check if the input looks correct
+			if (coords.Length == 3)
+			{
+				float x = float.Parse(coords[0]);
+				float y = float.Parse(coords[1]);
+				float z = float.Parse(coords[2]);
+				Player player = Utils.GetLocalPlayer().GetComponent<Player>();
+				player.SetPosition(new Vector3(x, y, z));
+				player.OnPlayerPositionCheat();
+			}
+		}
+		public static string GetOutputs()
+		{
+			float score = GetScore();
+			string pos = GetPlayerCoords();
+			string output = score + "|" + pos;
+			return output;
+		}
+		public static string GetPlayerCoords()
+        {
+			//Player player = Utils.GetLocalPlayer();
+			Vector3 pos = Utils.GetLocalPlayerPos();
+			float posx = pos.x;
+			float posy = pos.y;
+			float posz = pos.z;
+			string posstring = string.Join(",",new {pos.x, pos.y, pos.z});
+			return posstring;
+		}
+		public static string GetOutputsWithImages()
         {
 			// start screencap coroutine
 			ScreenToText();
 			// gather scores while it captures
 			float score = GetScore();
 			// return both
+			CheckImageReady();
 			string output = string.Concat(new object[]
 				{
 							score,
 							"|",
 							Image
 				});
+			// reset the image loaded flag
+			ImageLoaded = false;
 			return output;
 
 		}
 		internal static ScreenCapture Capture;
 		public static string Image;
+		public static bool ImageLoaded = false;
 		public static void ScreenToText()
 		{
 			if (Capture == null)
@@ -122,10 +164,13 @@ namespace ReinforcementHelper
 			byte[] bytes = texture.EncodeToJPG();
 
 			String AsBase64String = Convert.ToBase64String(bytes);
+			// save the image
 			Methods.Image = AsBase64String;
+			// inform CheckImageReady it is safe to proceed.
+			Methods.ImageLoaded = true;
 
 			//Tell unity to delete the texture, by default it seems to keep hold of it and memory crashes will occur after too many screenshots.
-			DestroyObject(texture);
+			Destroy(texture);
 		}
 	}
 }
