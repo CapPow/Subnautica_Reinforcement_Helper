@@ -16,4 +16,4 @@ Additionally, schooling fish are removed (via [Harmony](https://github.com/parde
 "warp|{x}, {y}, {z}" : warps the agent to the provided x, y, z coordaintes.
 </code></pre>
 
-See the example Python class implementation.
+See the provided Python class for an example implementation.
