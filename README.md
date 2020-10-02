@@ -9,7 +9,10 @@ Additionally, schooling fish are removed (via [Harmony](https://github.com/parde
 
 **Available REQ commands**
 <pre><code>
-"get_outputs" : returns a "|" delineated string containing a score, as well as agent coordinates. e.g., "0.2013|29.202|-102.234|-10.521". The score is based on the screen area occupied by creatures, with a small bonus for multiple creatures in frame.
+"get_outputs" : returns a "|" delineated string containing a score, as well as agent coordinates. 
+e.g., "0.2013|29.202|-102.234|-10.521". 
+The score is based on the screen area occupied by creatures.
+It also adds a small bonus for multiple creatures in frame.
 
 "resetview" : resets the agent view to "0, 0, 0"
 
