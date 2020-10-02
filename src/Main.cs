@@ -14,6 +14,7 @@ namespace ReinforcementHelper
 		public static void Load()
 		{
 			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), "ReinforcementHelper");
+			Placeholder.Awake();
 		}
 		// Token: 0x06000003 RID: 3 RVA: 0x00002094 File Offset: 0x00000294
 	}

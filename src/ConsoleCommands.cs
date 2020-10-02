@@ -46,7 +46,7 @@ namespace ReinforcementHelper
 										   null,
 										   true);
 		}
-		public void OnConsoleCommand_getoutput()
+		public static void OnConsoleCommand_getoutput()
 		{
             //Methods.RetrieveOutputs();
             string outstring = Methods.GetOutputs();

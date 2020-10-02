@@ -104,6 +104,12 @@ namespace ReinforcementHelper
 				Methods.WarpTo(pos[1]);
 				return "warping";
 			}
+			if (message == "resetview")
+            {
+				Methods.ResetPlayerView();
+				return "resetting playerview";
+
+			}
 			else return "not a proper request";
 		}
 
