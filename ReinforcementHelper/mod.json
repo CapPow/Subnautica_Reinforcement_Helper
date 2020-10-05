@@ -3,6 +3,7 @@
   "DisplayName": "Reinforcement Helper",
   "Author": "Cappow",
   "Version": "0.1",
+  "Dependencies": ["RuntimeEditorForSubnautiac"],
   "Enable": true,
   "Game": "Subnautica",
   "AssemblyName": "ReinforcementHelper.dll"
