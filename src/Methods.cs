@@ -48,6 +48,16 @@ namespace ReinforcementHelper
 
         public static float GetScore()
         {
+            Player player = Player.main;
+            if (player != null)
+            {
+
+                if (!player.IsUnderwater())
+                {
+                    // agent spends all day splashing about.. punish this..
+                    return 0f;
+                }
+            }
             float score = 0f;
             float screenArea = (float)(Screen.height * Screen.width);
 
@@ -97,7 +107,7 @@ namespace ReinforcementHelper
                     {
                         Rect rect = new Rect(vector.x, vector.y, vector2.x - vector.x, vector2.y - vector.y);
                         float this_item_score = (rect.height * rect.width) / screenArea;
-                        if (this_item_score > 0.02)
+                        if (this_item_score > 0.01)
                         {
                             //reward multiple targets in frame
                             score += this_item_score + perTargetModifier;
@@ -113,11 +123,13 @@ namespace ReinforcementHelper
         {
             string[] coords = pos.Split(',');
             // check if the input looks correct
-            if (coords.Length == 3)
+            if (coords.Length == 4)
             {
                 float x = float.Parse(coords[0]);
                 float y = float.Parse(coords[1]);
                 float z = float.Parse(coords[2]);
+                // also set the time of day with after warping position
+                DevConsole.SendConsoleCommand("daynight " + coords[3]);
                 Player player = Utils.GetLocalPlayer().GetComponent<Player>();
                 player.SetPosition(new Vector3(x, y, z));
                 player.OnPlayerPositionCheat();
